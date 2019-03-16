@@ -1,7 +1,6 @@
 apiVersion: template.openshift.io/v1
 kind: Template
 metadata:
-  creationTimestamp: null
   name: oracle-persistent
 objects:
 - apiVersion: v1
