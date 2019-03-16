@@ -39,9 +39,8 @@ objects:
           deploymentconfig: oracle12c
       spec:
         containers:
-        - image: docker.io/store/oracle/database-enterprise
+        - name: oracle12c
           imagePullPolicy: Always
-          name: oracle12c
           ports:
           - containerPort: 1521
             protocol: TCP
