@@ -1,0 +1,70 @@
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: orcl
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+status: {}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: oracle19c
+    app.kubernetes.io/component: oracle19c
+    app.kubernetes.io/instance: oracle19c
+    app.kubernetes.io/part-of: oracle19c
+  name: oracle19c
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: oracle19c
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: oracle19c
+        deploymentconfig: oracle19c
+    spec:
+      containers:
+      - env:
+        - name: ORACLE_SID
+          value: PITTDB
+        - name: ORACLE_PWD
+          value: MyPa55w0rd#
+        image: quay.io/pittar/oracle:19.3.0-se2
+        imagePullPolicy: Always
+        name: oracle19c
+        resources: {}
+        ports:
+          - containerPort: 1521
+            protocol: TCP
+          - containerPort: 5500
+            protocol: TCP
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+          - mountPath: /opt/oracle/oradata
+            name: orcl
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext:
+        fsGroup: 54321
+      serviceAccount: oracle
+      serviceAccountName: oracle
+      terminationGracePeriodSeconds: 30
+      volumes:
+        - name: orcl
+          persistentVolumeClaim:
+            claimName: orcl

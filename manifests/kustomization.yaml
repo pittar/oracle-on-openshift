@@ -1,0 +1,8 @@
+namespace: oracle-test
+
+resources:
+  - namespace.yaml
+  - serviceaccount.yaml
+  - role-and-binding.yaml
+  - deployment.yaml
+  - service.yaml
