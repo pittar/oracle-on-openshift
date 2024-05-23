@@ -1,0 +1,17 @@
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: console
+  labels:
+    app: oracle19c
+spec:
+  to:
+    kind: Service
+    name: oracle19c
+    weight: 100
+  port:
+    targetPort: 5500-tcp
+  tls:
+    termination: passthrough
+    insecureEdgeTerminationPolicy: Redirect
+  wildcardPolicy: None
